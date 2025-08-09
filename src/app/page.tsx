@@ -96,10 +96,14 @@ function Home() {
       <RheoButton onClick={async () => {
         const name = prompt("Enter project name:");
         if (name && user) {
+          const idToken = await user.getIdToken();
           await fetch('/api/projects', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, orgId: 'org_placeholder', vertical: 'b2b-agency', userId: user.uid }),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${idToken}`,
+            },
+            body: JSON.stringify({ name, orgId: 'org_placeholder', vertical: 'b2b-agency' }),
           });
           // Refetch projects
           setCurrentProject(null); // This will trigger the useEffect to refetch

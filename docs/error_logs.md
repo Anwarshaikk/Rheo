@@ -1,24 +1,49 @@
-# Error Logs
+Error: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
 
-## 2025-08-09: Next.js Development Server Failure
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
 
-### Issue
-The Next.js development server (`npm run dev`) fails to start. The command hangs without providing a specific error message, even when using different ports or the `--turbo` flag.
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
 
-### Attempts to Resolve
-1.  **Standard `npm run dev`:** Command hangs.
-2.  **`npx next dev --port 3001`:** Command hangs.
-3.  **`npx next dev --port 3001 --turbo`:** Command hangs.
-4.  **Port Check:** Verified that no zombie processes are blocking ports 3000 or 3001 using `netstat` and `taskkill`.
+https://react.dev/link/hydration-mismatch
 
-### Hypothesis
-The issue is likely not a port conflict. It could be related to one of the following:
-- A dependency conflict or a bug in a recently installed package.
-- An issue with the Next.js 15.x experimental version.
-- A problem with the local Node.js or npm environment configuration on the Windows machine.
-- A silent configuration error in one of the `tailwind` or `postcss` files.
+  ...
+    <Router actionQueue={{state:{...}, ...}} assetPrefix="" globalError={[...]} gracefullyDegrade={false}>
+      <HistoryUpdater>
+      <RuntimeStyles>
+      <HotReload assetPrefix="" globalError={[...]}>
+        <AppDevOverlayErrorBoundary globalError={[...]}>
+          <ReplaySsrOnlyErrors>
+          <DevRootHTTPAccessFallbackBoundary>
+            <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+              <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+                <RedirectBoundary>
+                  <RedirectErrorBoundary router={{...}}>
+                    <Head>
+                    <link>
+                    <RootLayout>
+                      <html
+                        lang="en"
+-                       suppresshydrationwarning="true"
+-                       data-qb-installed="true"
+                      >
+                    ...
 
-### Next Steps
-- Re-examine the project configuration files for syntax errors.
-- Attempt to build the project (`npm run build`) to see if it produces more specific errors.
-- Systematically remove or downgrade recently added dependencies to isolate the problem.
+    at createConsoleError (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/console-error.js:23:71)
+    at handleConsoleError (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/use-error-handler.js:45:54)
+    at console.error (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/intercept-console-error.js:50:57)
+    at eval (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:4709:19)
+    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:873:30)
+    at emitPendingHydrationWarnings (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:4708:9)
+    at completeWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:11492:18)
+    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:876:13)
+    at completeUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15814:19)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15695:11)
+    at workLoopConcurrentByScheduler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15672:9)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15647:15)
+    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:14941:13)
+    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16767:7)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)

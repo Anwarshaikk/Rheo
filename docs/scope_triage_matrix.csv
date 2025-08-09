@@ -1,0 +1,11 @@
+Vertical,Best-Fit Stage,Fit,Notes
+B2B Services/Agencies,Idea → $5M ARR,IN (Green),Digital workflows; proposals→invoice; CRM + billing
+B2B SaaS/Tools,Pre‑seed → Series A,IN (Green),Founder-led sales; GTM + ops stack; pricing/unit economics
+Creator/Consultant,Idea → $1M/yr,IN (Green),Booking + payments; content engine; onboarding SOPs
+DTC / E‑commerce,Idea → $5M/yr,IN (Green),Storefront + email/SMS flows; analytics; no 3PL mgmt
+Local Services,Idea → $3M/yr,IN (Green/Yellow),Booking/reviews/SMS; ⚠ no permits/field ops routing
+Light Manufacturing/Wholesale,Idea → $10M/yr,IN (Yellow),RFQ→PO→Invoice; margin tracking; ⚠ no MES/QA compliance
+Healthcare clinics,Any,LIMITED (Yellow),Planning/GTM only; ⚠ no PHI handling/compliance guarantees
+Fintech wallet/exchange,Any,OUT (Red),Regulatory custody/KYC/AML risk
+Defense/ITAR/CMMC,Any,OUT (Red),Compliance + data controls beyond scope
+Pharma/biotech/med devices,Any,OUT (Red),Clinical trials/regulatory approvals required

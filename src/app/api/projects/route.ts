@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import { collection, writeBatch, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { log } from '@/lib/logging';
 
 const seedGates = [
@@ -12,19 +12,15 @@ const seedGates = [
 
 export async function POST(request: Request) {
   const startTime = Date.now();
-  try {
-    const { name, orgId, vertical, userId } = await request.json();
+  let { name, orgId, vertical, userId } = await request.json();
 
+  try {
     if (!name || !orgId || !vertical || !userId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const batch = writeBatch(db);
-
     // 1. Create Project
-    const projectRef = doc(collection(db, 'projects'));
-    const projectId = projectRef.id;
-    batch.set(projectRef, {
+    const projectRef = await addDoc(collection(db, 'projects'), {
       name,
       orgId,
       vertical,
@@ -33,12 +29,11 @@ export async function POST(request: Request) {
       updatedAt: serverTimestamp(),
       createdBy: userId,
     });
+    const projectId = projectRef.id;
 
     // 2. Create Stages and Gates
     for (const stageData of seedGates) {
-      const stageRef = doc(collection(db, 'stages'));
-      const stageId = stageRef.id;
-      batch.set(stageRef, {
+      const stageRef = await addDoc(collection(db, 'stages'), {
         projectId,
         orgId,
         name: stageData.stageName,
@@ -46,9 +41,9 @@ export async function POST(request: Request) {
         updatedAt: serverTimestamp(),
         createdBy: userId,
       });
+      const stageId = stageRef.id;
 
-      const gateRef = doc(collection(db, 'gates'));
-      batch.set(gateRef, {
+      await addDoc(collection(db, 'gates'), {
         ...stageData.gate,
         projectId,
         stageId,
@@ -60,8 +55,6 @@ export async function POST(request: Request) {
       });
     }
 
-    await batch.commit();
-
     const durationMs = Date.now() - startTime;
     await log('project.created', 'INFO', { name, vertical }, orgId, userId, projectId, undefined, durationMs);
 
@@ -69,10 +62,9 @@ export async function POST(request: Request) {
   } catch (error: any) {
     const durationMs = Date.now() - startTime;
     console.error('Error creating project:', error);
-    // Assuming you have a way to get orgId, userId from the request even on failure
-    // For now, logging without them if they are not available.
-    await log('project.created.error', 'ERROR', { error: error.message }, 'unknown', 'unknown', undefined, error.message, durationMs);
+    await log('project.created.error', 'ERROR', { error: error.message }, orgId || 'unknown', userId || 'unknown', undefined, error.message, durationMs);
     return NextResponse.json({ error: 'Failed to create project' }, { status: 500 });
   }
 }
+
 

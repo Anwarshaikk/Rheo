@@ -14,13 +14,13 @@ export async function log(
   try {
     const logEntry = {
       orgId,
-      projectId,
+      projectId: projectId || null,
       actor,
       event,
       level,
       payload,
-      error,
-      durationMs,
+      error: error || null,
+      durationMs: durationMs || null,
       createdAt: serverTimestamp(),
     };
     await addDoc(collection(db, 'logs'), logEntry);
@@ -29,3 +29,4 @@ export async function log(
     console.error("Failed to write log:", e);
   }
 }
+

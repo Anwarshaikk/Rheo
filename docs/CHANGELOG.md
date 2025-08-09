@@ -4,6 +4,7 @@
 
 ### Commits
 - `chore: initial project setup`
+- `feat: implement data schemas and seed script`
 
 ### Notable Changes
 - Cloned the initial empty repository.
@@ -14,3 +15,5 @@
 - Manually configured Firebase by creating `.firebaserc` and `firebase.json` to enable Firestore and Hosting for Next.js (SSR).
 - Created the initial `firestore.rules` file.
 - Added the `.env.local` file with the provided API key.
+- Created Zod schemas for all Firestore collections (`orgs`, `projects`, `stages`, `gates`, `deliverables`, `evidence`, `logs`).
+- Created the initial seeder script (`scripts/seed.ts`) with the data for the initial project gates.

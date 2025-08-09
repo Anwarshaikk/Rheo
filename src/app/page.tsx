@@ -4,9 +4,10 @@ import { RheoButton } from "@/components/rheo/RheoButton";
 import { RheoCard } from "@/components/rheo/RheoCard";
 import { DeliverableFactory } from "@/components/rheo/DeliverableFactory";
 import { EvidenceDrawer } from "@/components/rheo/EvidenceDrawer";
+import { withAuth } from "@/components/rheo/withAuth";
 import { toast } from "sonner";
 
-export default function Home() {
+function Home() {
   const handleEvaluateGates = async () => {
     try {
       const response = await fetch('/api/evaluate', {
@@ -69,4 +70,6 @@ export default function Home() {
     </main>
   );
 }
+
+export default withAuth(Home);
 

@@ -1,13 +1,57 @@
-ReferenceError: useToast is not defined
-    at DeliverableFactory (webpack-internal:///(app-pages-browser)/./src/components/rheo/DeliverableFactory.tsx:23:23)
-    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23553:20)
-    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6764:22)
-    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9070:19)
-    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10680:18)
-    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:873:30)
-    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15678:22)
-    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15498:41)
-    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15478:11)
-    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:14985:44)
-    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16767:7)
-    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)
+Nice! That’s a solid first pass—clean gradient, clear sections, and the “Deliverable Factory / Evidence Locker” panels read well. Here’s how I’d level it up fast:
+
+# Quick wins (do now)
+
+* **Tighten layout:** center a `max-w-[1200px]` container, make the stage cards equal height, and align the right panels to a fixed 320–360px width.
+* **Gloss + contrast:** use the glass token on inputs/cards (subtle blur + 1px inner border), and bump heading to a lighter weight with tighter tracking.
+* **Status chips:** show **Passed** in accent with an icon, **Pending** in slate; it’ll add instant affordance.
+* **Evaluate button UX:** disabled until new evidence is added; show loading + success toast.
+
+# Tiny code drops
+
+**Gate chip (status color + icon)**
+
+```tsx
+function GateChip({label, passed}:{label:string; passed:boolean}) {
+  return (
+    <span className={`inline-flex items-center gap-1 px-3 py-1 text-sm rounded-full border
+      ${passed ? 'bg-rheo-accent text-white border-transparent' : 'bg-white/70 text-rheo-subtle border-rheo-border'}`}>
+      {passed ? '✓' : '•'} {label}
+    </span>
+  );
+}
+```
+
+**Container & panels (glossy, centered)**
+
+```tsx
+<div className="mx-auto w-full max-w-[1200px] px-6">
+  <h1 className="text-4xl font-semibold tracking-tight mb-6">Pipeline Board</h1>
+  <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6">
+    {/* left: stages */}
+    <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      {/* Stage cards here */}
+    </div>
+    {/* right: factory + evidence */}
+    <aside className="space-y-4">
+      <div className="rheo-glass rounded-lg p-4">…Deliverable Factory…</div>
+      <div className="rheo-glass rounded-lg p-4">…Evidence Locker…</div>
+    </aside>
+  </div>
+</div>
+```
+
+# 60–90 min polish
+
+* **Motion:** fade+rise cards on mount (Framer 0.25s), subtle lift on hover.
+* **Theme switcher:** add **Aurora ↔ Prism** toggle; in Prism, color the stage headers.
+* **Toasts:** “Proposal created”, “Evidence added”, “Gates evaluated”.
+
+# QA checklist
+
+* Pending→Passed flips only when the **required evidence kind** exists.
+* Missing/duplicate evidence → helpful error.
+* State persists on reload; auth guard blocks `/app/*`.
+* Mobile: stages become a horizontal scroll area; right panel stacks.
+
+If you want, I’ll write a tiny PR patch with these tweaks (chips, container, button states, toasts) so you can paste it straight into the repo.

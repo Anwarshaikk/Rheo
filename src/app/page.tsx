@@ -1,38 +1,5 @@
 'use client';
 
-import { useState } from "react";
-import { RheoButton } from "@/components/rheo/RheoButton";
-import { RheoCard } from "@/components/rheo/RheoCard";
-import { DeliverableFactory } from "@/components/rheo/DeliverableFactory";
-import { EvidenceDrawer } from "@/components/rheo/EvidenceDrawer";
-import { withAuth } from "@/components/rheo/withAuth";
-import { GateChip } from "@/components/rheo/GateChip";
-import { toast } from "sonner";
-import { motion } from "framer-motion";
-
-function Home() {
-  const [isEvaluating, setIsEvaluating] = useState(false);
-  const [hasNewEvidence, setHasNewEvidence] = useState(true); // Mock state
-
-  const handleEvaluateGates = async () => {
-    setIsEvaluating(true);
-    try {
-      const response = await fetch('/api/evaluate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ projectId: 'prj_123', stageId: 'stage_123' }), // Placeholder IDs
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to evaluate gates');
-      }
-
-      const result = await response.json();
-      console.log('Gates evaluated:', result);
-      'use client';
-
 import { useState, useEffect, useCallback } from "react";
 import { RheoButton } from "@/components/rheo/RheoButton";
 import { RheoCard } from "@/components/rheo/RheoCard";

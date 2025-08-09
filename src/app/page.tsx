@@ -1,36 +1,29 @@
-import { Button } from "@/components/ui/button";
+import { RheoButton } from "@/components/rheo/RheoButton";
+import { RheoCard } from "@/components/rheo/RheoCard";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold">Pipeline Board</h1>
-      <div className="flex space-x-4">
-        <div className="w-64 rounded-lg bg-gray-100 p-4">
-          <h2 className="text-lg font-bold">Validate</h2>
-          <div className="mt-4 space-y-2">
-            <div className="rounded-md bg-white p-2">ICP defined</div>
-          </div>
+    <main className="rheo-hero min-h-screen p-8">
+      <div className="container mx-auto">
+        <h1 className="text-4xl font-bold text-rheo-text mb-8">Pipeline Board</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <RheoCard title="Validate">
+            <div className="rounded-md bg-white p-2 shadow">ICP defined</div>
+          </RheoCard>
+          <RheoCard title="Plan">
+            <div className="rounded-md bg-white p-2 shadow">Offer & price</div>
+          </RheoCard>
+          <RheoCard title="Launch">
+            <div className="rounded-md bg-white p-2 shadow">Proposal sent</div>
+          </RheoCard>
+          <RheoCard title="Run">
+            <div className="rounded-md bg-white p-2 shadow">Invoice paid</div>
+          </RheoCard>
         </div>
-        <div className="w-64 rounded-lg bg-gray-100 p-4">
-          <h2 className="text-lg font-bold">Plan</h2>
-          <div className="mt-4 space-y-2">
-            <div className="rounded-md bg-white p-2">Offer & price</div>
-          </div>
-        </div>
-        <div className="w-64 rounded-lg bg-gray-100 p-4">
-          <h2 className="text-lg font-bold">Launch</h2>
-          <div className="mt-4 space-y-2">
-            <div className="rounded-md bg-white p-2">Proposal sent</div>
-          </div>
-        </div>
-        <div className="w-64 rounded-lg bg-gray-100 p-4">
-          <h2 className="text-lg font-bold">Run</h2>
-          <div className="mt-4 space-y-2">
-            <div className="rounded-md bg-white p-2">Invoice paid</div>
-          </div>
+        <div className="mt-8 flex justify-center">
+          <RheoButton>Evaluate Gates</RheoButton>
         </div>
       </div>
-      <Button>Evaluate</Button>
     </main>
   );
 }

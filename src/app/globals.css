@@ -1,22 +1,70 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base neutrals */
+  --rheo-bg: #f8fafc;            /* page */
+  --rheo-surface: #ffffff;       /* cards */
+  --rheo-text: #0f172a;          /* primary text */
+  --rheo-subtle: #334155;        /* secondary text */
+  --rheo-border: rgba(15,23,42,0.08);
+  --rheo-ring: rgba(37,99,235,0.35);
+
+  /* Glass recipe */
+  --rheo-glass-bg: rgba(255,255,255,0.65);
+  --rheo-glass-blur: 10px;
+  --rheo-glass-border: rgba(255,255,255,0.6);
+  --rheo-glass-shadow: 0 10px 25px rgba(2,6,23,0.08);
+
+  /* Radii & motion */
+  --rheo-radius-sm: 10px;
+  --rheo-radius-md: 14px;
+  --rheo-radius-lg: 20px;
+  --rheo-ease: cubic-bezier(.2,.8,.2,1);
+  --rheo-dur-fast: 150ms;
+  --rheo-dur: 250ms;
 }
+
+[data-theme="aurora"]{
+  --rheo-accent: #2563eb; /* blue-600 */
+  --rheo-accent-2: #7c3aed; /* violet-600 */
+  --rheo-grad-1: linear-gradient(135deg,#93c5fd 0%,#c4b5fd 100%);
+}
+
+[data-theme="prism"]{
+  --rheo-accent: #2563eb; /* default */
+  --rheo-pipeline: #2563eb; /* blue */
+  --rheo-studio:   #22c55e; /* green */
+  --rheo-evidence: #f59e0b; /* amber */
+  --rheo-connect:  #06b6d4; /* cyan */
+  --rheo-packs:    #a855f7; /* purple */
+  --rheo-agents:   #ef4444; /* red */
+}
+
+[data-theme="sunset"]{
+  --rheo-accent: #f97316; /* orange-500 */
+  --rheo-accent-2: #ec4899; /* pink-500 */
+  --rheo-grad-1: linear-gradient(135deg,#fed7aa 0%,#fbcfe8 100%);
+}
+
+[data-theme="tropic"]{
+  --rheo-accent: #10b981; /* emerald-500 */
+  --rheo-accent-2: #14b8a6; /* teal-500 */
+  --rheo-grad-1: linear-gradient(135deg,#a7f3d0 0%,#99f6e4 100%);
+}
+
+/* glossy card */
+.rheo-glass { background: var(--rheo-glass-bg); backdrop-filter: blur(var(--rheo-glass-blur));
+  -webkit-backdrop-filter: blur(var(--rheo-glass-blur)); border: 1px solid var(--rheo-glass-border);
+  box-shadow: var(--rheo-glass-shadow); }
+
+/* gradient header */
+.rheo-hero { background: var(--rheo-grad-1); }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--rheo-bg);
+  --color-foreground: var(--rheo-text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
